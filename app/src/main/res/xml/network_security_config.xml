@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <!-- Izin untuk Emulator Android -->
+        <domain includeSubdomains="true">10.0.2.2</domain>
+        <!-- Izin untuk IP PC/Laptop lokal -->
+        <domain includeSubdomains="true">192.168.1.7</domain>
+        <!-- PENAMBAHAN: Izin untuk IP baru yang digunakan -->
+        <domain includeSubdomains="true">10.211.128.1</domain>
+        <domain includeSubdomains="true">10.211.128.18</domain>
+    </domain-config>
+</network-security-config>
