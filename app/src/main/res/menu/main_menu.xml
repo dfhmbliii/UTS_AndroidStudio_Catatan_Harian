@@ -5,8 +5,8 @@
     <item
         android:id="@+id/action_dark_mode"
         android:title="Dark Mode"
-        app:actionViewClass="androidx.appcompat.widget.SwitchCompat"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always"
+        app:actionLayout="@layout/switch_item" />
 
     <item
         android:id="@+id/action_logout"

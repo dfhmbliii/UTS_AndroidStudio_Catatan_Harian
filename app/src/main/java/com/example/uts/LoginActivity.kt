@@ -65,7 +65,6 @@ class LoginActivity : AppCompatActivity() {
         switchTheme = findViewById(R.id.switchTheme)
         val btnGoogleSignIn: SignInButton = findViewById(R.id.btnGoogleSignIn)
 
-        // --- Logika untuk tombol-tombol ---
         btnLogin.setOnClickListener {
             val email = etUsername.text.toString().trim()
             val password = etPassword.text.toString().trim()
@@ -95,20 +94,17 @@ class LoginActivity : AppCompatActivity() {
             signIn()
         }
 
-        // --- PERBAIKAN: Logika Dark Mode dengan ThemeManager ---
-        // Atur status awal switch sesuai tema yang tersimpan
         switchTheme.isChecked = ThemeManager.isDarkMode(this)
 
+        // PERBAIKAN FINAL: Gunakan recreate() agar perubahan tema lebih kuat
         switchTheme.setOnCheckedChangeListener { _, isChecked ->
-            // Simpan dan terapkan tema baru saat switch diubah
             ThemeManager.setTheme(this, isChecked)
+            recreate()
         }
     }
 
     override fun onStart() {
         super.onStart()
-        // Cek jika sudah login, langsung masuk
-        // Kita biarkan pengecekan ini agar saat buka aplikasi lagi tidak perlu login ulang
         if (auth.currentUser != null) {
             updateUI()
         }

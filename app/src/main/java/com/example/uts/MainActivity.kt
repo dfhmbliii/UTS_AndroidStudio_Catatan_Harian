@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -126,30 +127,37 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
+    // --- PERBAIKAN FINAL: Menangani Switch di Toolbar ---
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
+        
+        val darkModeItem = menu?.findItem(R.id.action_dark_mode)
+        val switchView = darkModeItem?.actionView as? SwitchMaterial
+
+        switchView?.let {
+            // Atur status awal switch sesuai tema yang tersimpan
+            it.isChecked = ThemeManager.isDarkMode(this)
+
+            // Pasang listener saat switch digeser
+            it.setOnCheckedChangeListener { _, isChecked ->
+                ThemeManager.setTheme(this, isChecked)
+                recreate()
+            }
+        }
+        
         return true
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        val darkModeItem = menu?.findItem(R.id.action_dark_mode)
-        darkModeItem?.title = if (ThemeManager.isDarkMode(this)) "Light Mode" else "Dark Mode"
-        return super.onPrepareOptionsMenu(menu)
-    }
+    // Hapus onPrepareOptionsMenu karena tidak lagi dibutuhkan untuk switch
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Hanya menangani item menu yang BUKAN switch
         return when (item.itemId) {
             R.id.action_logout -> {
                 showLogoutConfirmationDialog()
                 true
             }
-            R.id.action_dark_mode -> {
-                val isCurrentlyDark = ThemeManager.isDarkMode(this)
-                ThemeManager.setTheme(this, !isCurrentlyDark)
-                // PERBAIKAN FINAL: Gunakan recreate() untuk menggambar ulang seluruh activity
-                recreate()
-                true
-            }
+            // Kasus untuk action_dark_mode dihapus dari sini
             else -> super.onOptionsItemSelected(item)
         }
     }
